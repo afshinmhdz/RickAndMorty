@@ -1,7 +1,6 @@
 import './App.css'
 import CharacterList from './component/CharacterList'
 import Navbar from './component/Navbar'
-import {allCharacters} from '../data/data'
 import CharacterDetail from './component/CharacterDetail'
 function App() {
  
@@ -9,7 +8,7 @@ function App() {
     <div className="app">
         <Navbar/>  
       <div className="main">
-        <CharacterList characters={allCharacters}/>
+        <CharacterList />
         <CharacterDetail/>
       </div>
     </div>
