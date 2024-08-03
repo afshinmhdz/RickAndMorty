@@ -9,18 +9,18 @@ function App() {
   return (
     <div className="app">
       <Navbar nomOfResult={characters.length} />
-      <Main characters={characters}/>
+      <Main characters={characters}>
+        <CharacterList characters={characters} />
+        <CharacterDetail />
+      </Main>
     </div>
   );
 }
 
 export default App;
 
-function Main({characters}) {
-  return (
-    <div className="main">
-      <CharacterList characters={characters} />
-      <CharacterDetail />
-    </div>
-  );
+function Main({ children }) {
+  return <div className="main">
+    {children}
+  </div>;
 }
