@@ -3,9 +3,19 @@ import CharacterList from "./component/CharacterList";
 import Navbar from "./component/Navbar";
 import CharacterDetail from "./component/CharacterDetail";
 import { allCharacters } from "../data/data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 function App() {
-  const [characters, setCharacters] = useState(allCharacters);
+  const [characters, setCharacters] = useState([]);
+
+  useEffect(() => {
+    async function fetchData(params) {
+      const res=await fetch("https://rickandmortyapi.com/api/character")
+      const data=await res.json();
+      setCharacters(data.results)
+    }
+    fetchData();
+  },[]);
+
   return (
     <div className="app">
       <Navbar nomOfResult={characters.length} />
@@ -20,7 +30,5 @@ function App() {
 export default App;
 
 function Main({ children }) {
-  return <div className="main">
-    {children}
-  </div>;
+  return <div className="main">{children}</div>;
 }
