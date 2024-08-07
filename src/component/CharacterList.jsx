@@ -1,11 +1,13 @@
 import { EyeIcon } from "@heroicons/react/24/outline";
-function CharacterList({characters}) {
-  
+import Loader from "./Loader";
+function CharacterList({ characters, isLoading }) {
   return (
     <div className="characters-list">
-      {characters.map((item) => (
-        <Character key={item.id} item={item} />
-      ))}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        characters.map((item) => <Character key={item.id} item={item} />)
+      )}
     </div>
   );
 }
@@ -16,8 +18,8 @@ function Character({ item }) {
   return (
     <div className="list__item">
       <img src={item.image} alt={item.name} />
-        <CharacterName item={item}/>
-        <CharacterInfo item={item}/>
+      <CharacterName item={item} />
+      <CharacterInfo item={item} />
       <button className="icon red">
         <EyeIcon />
       </button>
@@ -33,14 +35,12 @@ function CharacterName({ item }) {
   );
 }
 
-function CharacterInfo({item}){
-  return(
+function CharacterInfo({ item }) {
+  return (
     <div className="list-item__info info">
-        <span
-          className={`status ${item.status === "Dead" ? "red" : ""}`}
-        ></span>
-        <span>{" " + item.status}</span>
-        <span> - {item.species}</span>
-      </div>
-  )
+      <span className={`status ${item.status === "Dead" ? "red" : ""}`}></span>
+      <span>{" " + item.status}</span>
+      <span> - {item.species}</span>
+    </div>
+  );
 }
