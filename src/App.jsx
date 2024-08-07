@@ -4,29 +4,41 @@ import Navbar from "./component/Navbar";
 import CharacterDetail from "./component/CharacterDetail";
 import { allCharacters } from "../data/data";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
 function App() {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData(params) {
-      setIsLoading(true);
-      {
-        /** until data not complete loading setIsloading true */
+      try {
+        setIsLoading(true);
+        {
+          /** until data not complete loading setIsloading true */
+        }
+        const res = await fetch("https://rickandmortyapi.com/api/characterrr");
+
+        if(!res.ok) throw new Error("Somthing went wrong");
+        
+        const data = await res.json();
+        setCharacters(data.results);
+        {
+          /**whene data loading is done setIsLoading false  */
+        }
+      } catch (error) {
+       toast.error(error.message)
+        
       }
-      const res = await fetch("https://rickandmortyapi.com/api/character");
-      const data = await res.json();
-      setCharacters(data.results);
+     finally{
       setIsLoading(false);
-      {
-        /**whene data loading is done setIsLoading false  */
-      }
+     }
     }
     fetchData();
   }, []);
 
   return (
     <div className="app">
+      <Toaster/>
       <Navbar nomOfResult={characters.length} />
       <Main characters={characters}>
         <CharacterList characters={characters} isLoading={isLoading}/>
