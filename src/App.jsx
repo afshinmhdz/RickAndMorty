@@ -1,6 +1,6 @@
 import "./App.css";
 import CharacterList from "./component/CharacterList";
-import Navbar from "./component/Navbar";
+import Navbar, { Search } from "./component/Navbar";
 import CharacterDetail from "./component/CharacterDetail";
 import { allCharacters } from "../data/data";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import axios from "axios";
 function App() {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [query,setQuery]=useState("")
   useEffect(() => {
     async function fetchData(params) {
       try {
@@ -17,7 +17,7 @@ function App() {
         {
           /** until data not complete loading setIsloading true */
         }
-        const res = await axios.get("https://rickandmortyapi.com/api/characters");
+        const res = await axios.get(`https://rickandmortyapi.com/api/character?name=${query}`);
 
         console.log(res);
         
@@ -26,8 +26,9 @@ function App() {
           /**whene data loading is done setIsLoading false  */
         }
       } catch (error) {
-       toast.error(error.response.data.error)
-        console.log(error.response.data.error);
+       setCharacters([]);
+        toast.error(error.response.data.error)
+        
         
       }
      finally{
@@ -35,12 +36,14 @@ function App() {
      }
     }
     fetchData();
-  }, []);
+  }, [query]);
 
   return (
     <div className="app">
       <Toaster/>
-      <Navbar nomOfResult={characters.length} />
+      <Navbar nomOfResult={characters.length} >
+        <Search query={query} setQuery={setQuery}/>
+      </Navbar>
       <Main characters={characters}>
         <CharacterList characters={characters} isLoading={isLoading}/>
         <CharacterDetail />
