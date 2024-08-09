@@ -17,16 +17,17 @@ function App() {
         {
           /** until data not complete loading setIsloading true */
         }
-        const {data} = await axios.get("https://rickandmortyapi.com/api/character");
+        const res = await axios.get("https://rickandmortyapi.com/api/characters");
 
-        console.log(res.data);
+        console.log(res);
         
-        setCharacters(data.results);
+        setCharacters(res.data.results);
         {
           /**whene data loading is done setIsLoading false  */
         }
       } catch (error) {
-       toast.error(error.message)
+       toast.error(error.response.data.error)
+        console.log(error.response.data.error);
         
       }
      finally{
