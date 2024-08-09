@@ -5,6 +5,7 @@ import CharacterDetail from "./component/CharacterDetail";
 import { allCharacters } from "../data/data";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
+import axios from "axios";
 function App() {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -16,11 +17,10 @@ function App() {
         {
           /** until data not complete loading setIsloading true */
         }
-        const res = await fetch("https://rickandmortyapi.com/api/characterrr");
+        const {data} = await axios.get("https://rickandmortyapi.com/api/character");
 
-        if(!res.ok) throw new Error("Somthing went wrong");
+        console.log(res.data);
         
-        const data = await res.json();
         setCharacters(data.results);
         {
           /**whene data loading is done setIsLoading false  */
