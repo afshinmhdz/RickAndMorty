@@ -1,27 +1,43 @@
-import React from "react";
-import { characters, episodes } from "../../data/data";
+import React, { useEffect, useState } from "react";
+//import {  episodes } from "../../data/data";
 import { ArrowDownCircleIcon, LifebuoyIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
 
-function CharacterDetail() {
+function CharacterDetail({selectedCharacter}) {
+
+  const [character,setCharacter]=useState(null);
+
+
+  useEffect(()=>{
+    async function fetchData(prams) {
+      const {data}= await axios.get(`https://rickandmortyapi.com/api/character/${selectedCharacter}`)
+      setCharacter(data)
+    }
+    if(selectedCharacter)fetchData();
+  },[selectedCharacter])
+
+
+  if(!character) return <h2 style={{flex:1, color:"#fff"}}>Please select a character</h2>
+
   return (
     <div style={{ flex: 1 }}>
       <div className="character-detail">
-        <img src={characters.image} alt="" className="character-detail__img" />
+        <img src={character.image} alt="" className="character-detail__img" />
         <div className="character-detail__info">
           <h3 className="name">
-            <span>{characters.gender === "Male" ? "👨🏽" : "👩‍🦰"}</span>
-            <span>{characters.name}</span>
+            <span>{character.gender === "Male" ? "👨🏽" : "👩‍🦰"}</span>
+            <span>{character.name}</span>
           </h3>
           <div className="info">
             <span
-              className={`status ${characters.status === "Dead" ? "red" : ""}`}
+              className={`status ${character.status === "Dead" ? "red" : ""}`}
             ></span>
-            <span>&nbsp;{characters.status}</span>
-            <span>-{characters.species}</span>
+            <span>&nbsp;{character.status}</span>
+            <span>-{character.species}</span>
           </div>
           <div className="location">
             <p>Last known location</p>
-            <p>{characters.location.name}</p>
+            <p>{character.location.name}</p>
           </div>
           <div className="actions">
             <button className="btn btn--primary">Add to Favourite</button>
@@ -34,7 +50,7 @@ function CharacterDetail() {
           <ArrowDownCircleIcon className="icon" />
         </div>
         <ul>
-          {episodes.map((item,index) => (
+          {character.episode.map((item,index) => (
             <div>
               <li key={item.id}>
                 
