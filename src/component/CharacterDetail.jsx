@@ -3,21 +3,31 @@ import React, { useEffect, useState } from "react";
 import { ArrowDownCircleIcon, LifebuoyIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
-function CharacterDetail({selectedCharacter}) {
+function CharacterDetail({ selectedCharacter }) {
+  const [character, setCharacter] = useState(null);
+  const [episodes, setEpisodes] = useState([]);
 
-  const [character,setCharacter]=useState(null);
-
-
-  useEffect(()=>{
+  useEffect(() => {
     async function fetchData(prams) {
-      const {data}= await axios.get(`https://rickandmortyapi.com/api/character/${selectedCharacter}`)
-      setCharacter(data)
+      const { data } = await axios.get(
+        `https://rickandmortyapi.com/api/character/${selectedCharacter}`
+      );
+      setCharacter(data);
+
+      const episodesId = data.episode.map((e) => e.split("/").at(-1));
+
+      const { data: episodeData } = await axios.get(
+        `https://rickandmortyapi.com/api/episode/${episodesId}`
+      );
+      setEpisodes([episodeData].flat().slice(0,6));
     }
-    if(selectedCharacter)fetchData();
-  },[selectedCharacter])
+    if (selectedCharacter) fetchData();
+  }, [selectedCharacter]);
 
-
-  if(!character) return <h2 style={{flex:1, color:"#fff"}}>Please select a character</h2>
+  if (!character)
+    return (
+      <h2 style={{ flex: 1, color: "#fff" }}>Please select a character</h2>
+    );
 
   return (
     <div style={{ flex: 1 }}>
@@ -50,18 +60,17 @@ function CharacterDetail({selectedCharacter}) {
           <ArrowDownCircleIcon className="icon" />
         </div>
         <ul>
-          {character.episode.map((item,index) => (
-            <div>
+          {episodes.map((item, index) => (
               <li key={item.id}>
-                
                 <div>
-                  {String(index+1).padStart(2,"0")} - <span>{item.episode} : </span>
-                    <strong>{item.name}</strong>
+                  {String(index + 1).padStart(2, "0")} -{" "}
+                  <span>{item.episode} : </span>
+                  <strong>{item.name}</strong>
                 </div>
-                
+
                 <span className="badge badge--secondary">{item.air_date}</span>
               </li>
-            </div>
+            
           ))}
         </ul>
       </div>
