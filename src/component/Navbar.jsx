@@ -6,10 +6,7 @@ function Navbar({ children, nomOfResult }) {
 
       {children}
       <div className="navbar__result">found {nomOfResult} Character</div>
-      <button className="heart">
-        <HeartIcon className="icon" />
-        <span className="badge">4</span>
-      </button>
+      
     </nav>
   );
 }
@@ -18,4 +15,13 @@ export default Navbar;
 
 export function Search({ query, setQuery }) {
   return <input value={query} onChange={e=>setQuery(e.target.value)} type="text" className="text-field" placeholder="Search..." />;
+}
+
+export function Favourites({nomOfFavourites}){
+  return(
+    <button className="heart">
+        <HeartIcon className="icon" />
+        <span className="badge">{nomOfFavourites}</span>
+      </button>
+  );
 }

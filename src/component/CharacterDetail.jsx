@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { ArrowDownCircleIcon, LifebuoyIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
-function CharacterDetail({ selectedCharacter }) {
+function CharacterDetail({
+  selectedCharacter,
+  onAddFavourite,
+  isAddtoFavourite,
+}) {
   const [character, setCharacter] = useState(null);
   const [episodes, setEpisodes] = useState([]);
 
@@ -19,7 +23,7 @@ function CharacterDetail({ selectedCharacter }) {
       const { data: episodeData } = await axios.get(
         `https://rickandmortyapi.com/api/episode/${episodesId}`
       );
-      setEpisodes([episodeData].flat().slice(0,6));
+      setEpisodes([episodeData].flat().slice(0, 6));
     }
     if (selectedCharacter) fetchData();
   }, [selectedCharacter]);
@@ -50,7 +54,14 @@ function CharacterDetail({ selectedCharacter }) {
             <p>{character.location.name}</p>
           </div>
           <div className="actions">
-            <button className="btn btn--primary">Add to Favourite</button>
+            {
+              isAddtoFavourite ? (<p>Already Added to Favourite✅</p>):( <button
+                onClick={() => onAddFavourite(character)}
+                className="btn btn--primary"
+              >
+                Add to Favourite
+              </button>)
+            }
           </div>
         </div>
       </div>
@@ -61,16 +72,15 @@ function CharacterDetail({ selectedCharacter }) {
         </div>
         <ul>
           {episodes.map((item, index) => (
-              <li key={item.id}>
-                <div>
-                  {String(index + 1).padStart(2, "0")} -{" "}
-                  <span>{item.episode} : </span>
-                  <strong>{item.name}</strong>
-                </div>
+            <li key={item.id}>
+              <div>
+                {String(index + 1).padStart(2, "0")} -{" "}
+                <span>{item.episode} : </span>
+                <strong>{item.name}</strong>
+              </div>
 
-                <span className="badge badge--secondary">{item.air_date}</span>
-              </li>
-            
+              <span className="badge badge--secondary">{item.air_date}</span>
+            </li>
           ))}
         </ul>
       </div>

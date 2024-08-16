@@ -1,6 +1,6 @@
 import "./App.css";
 import CharacterList from "./component/CharacterList";
-import Navbar, { Search } from "./component/Navbar";
+import Navbar, { Favourites, Search } from "./component/Navbar";
 import CharacterDetail from "./component/CharacterDetail";
 import { allCharacters } from "../data/data";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [query,setQuery]=useState("")
   const [selectedCharacter,setSelectedCharacter]=useState(null);
+  const [favourites,setFavourites]=useState([]);
   useEffect(() => {
     async function fetchData(params) {
       try {
@@ -43,15 +44,22 @@ function App() {
     setSelectedCharacter(id)
   }
 
+  const handleAddFavourite=(char)=>{
+    setFavourites([...favourites,char])
+  }
+
+  const isAddtoFavourite  =favourites.map((fav)=>fav.id).includes(selectedCharacter);
+
   return (
     <div className="app">
       <Toaster/>
       <Navbar nomOfResult={characters.length} >
         <Search query={query} setQuery={setQuery}/>
+        <Favourites nomOfFavourites={favourites.length}/>
       </Navbar>
       <Main characters={characters}>
         <CharacterList characters={characters} isLoading={isLoading} onSelectCharacter={handleSelectCharacter}/>
-        <CharacterDetail characters={characters} selectedCharacter={selectedCharacter}/>
+        <CharacterDetail characters={characters} selectedCharacter={selectedCharacter} onAddFavourite={handleAddFavourite} isAddtoFavourite={isAddtoFavourite}/>
       </Main>
     </div>
   );
