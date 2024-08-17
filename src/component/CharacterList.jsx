@@ -6,7 +6,7 @@ function CharacterList({ characters, isLoading,onSelectCharacter }) {
       {isLoading ? (
         <Loader />
       ) : (
-        characters.map((item) => <Character key={item.id} item={item} onSelectCharacter={onSelectCharacter}/>)
+        characters.map((item) => <Character key={item.id} item={item} onSelectCharacter={onSelectCharacter}/>).slice(0,4)
       )}
     </div>
   );

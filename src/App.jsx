@@ -6,6 +6,7 @@ import { allCharacters } from "../data/data";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import Modal from "./component/Modal";
 function App() {
   const [characters, setCharacters] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +64,9 @@ function App() {
 
   return (
     <div className="app">
+      <Modal title={"title"} open={true}>
+        this modal
+      </Modal>
       <Toaster />
       <Navbar nomOfResult={characters.length}>
         <Search query={query} setQuery={setQuery} />
