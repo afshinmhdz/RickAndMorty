@@ -58,19 +58,23 @@ function App() {
     setFavourites([...favourites, char]);
   };
 
+  const handleDeleteFavourite=(id)=>{
+    setFavourites(favourites.filter(fav=>fav.id!==id));
+  }
+
   const isAddtoFavourite = favourites
     .map((fav) => fav.id)
     .includes(selectedCharacter);
 
   return (
     <div className="app">
-      <Modal title={"title"} open={true}>
+      {/* <Modal title={"title"} open={true}>
         this modal
-      </Modal>
+      </Modal> */}
       <Toaster />
-      <Navbar nomOfResult={characters.length}>
+      <Navbar nomOfResult={characters.length} >
         <Search query={query} setQuery={setQuery} />
-        <Favourites nomOfFavourites={favourites.length} />
+        <Favourites favourites={favourites} onDeleteFavourite={handleDeleteFavourite}/>
       </Navbar>
       <Main characters={characters}>
         <CharacterList
