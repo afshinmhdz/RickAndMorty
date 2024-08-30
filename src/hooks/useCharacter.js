@@ -10,27 +10,25 @@ export default function useCharacter(query) {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    async function fetchData(params) {
+    async function fetchData() {
       try {
         setIsLoading(true);
         {
           /** until data not complete loading setIsloading true */
         }
-        const res = await axios.get(
-          `https://rickandmortyapi.com/api/character?name=${query}`,
+        const {data} = await axios.get(
+          `https://rickandmortyapi.com/api/character/?name=${query}`,
           { signal }
         );
 
-        console.log(res);
-
-        setCharacters(res.data.results);
+        setCharacters(data.results);
         {
           /**whene data loading is done setIsLoading false  */
         }
-      } catch (error) {
+      } catch (err) {
         if (!axios.isCancel()) {
           setCharacters([]);
-          toast.error(error.response.data.error);
+          toast.error(err.response.data.error);
         }
       } finally {
         setIsLoading(false);
